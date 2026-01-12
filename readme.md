@@ -31,7 +31,7 @@ The 12th request is the enrollment boundary. Its SOAP-body contains the certific
             </wst:RequestSecurityToken>
         </s:Body>
 ```
-The `AdditionalContext` is a mix of user-supplied values and values that come from Pytune’s Windows device profiles. In Pytune’s base profile for Windows endpoints, the OS version is set to: “10.0.19045.2006”. During testing, certain `ContextItem`'s could be modified in transit without disrupting the enrollment flow. That weakness is the basis of the proof of concept.
+The `<AdditionalContext>` block is a mix of user-supplied values and values that come from Pytune’s Windows device profiles. In Pytune’s base profile for Windows endpoints, the OS version is set to: “10.0.19045.2006”. During testing, certain `<ContextItem>` fields could be modified in transit without disrupting the enrollment flow. That weakness is the basis of the proof of concept.
 ## Proof of Concept
 ### Setup
 The proof of concept shows that OS version restrictions can be undermined because Intune relies on cleartext and editable device context during enrollment. The setup uses a configuration where OS enrollment restrictions are set to only allow the most recent Windows 11 build (no. 10.0.26100.7462) and block older, unsupported versions:
@@ -78,7 +78,7 @@ Content-Length: 8306
         </s:Body>
     </s:Envelope>
 ```
-5. The `ContextItem`'s for 'OSVersion' and 'ApplicationVersion' are changed to an acceptable build, in this case: '10.0.26100.7462'. And the request is then.
+5. The `ContextItem` fields for 'OSVersion' and 'ApplicationVersion' are changed to an acceptable build, in this case: '10.0.26100.7462'. And the request is then.
 6. The enrollment service accepts the enrollment request and grants a valid MDM certificate to the endpoint/Pytune:
 
 ![alt text](image.png)
