@@ -95,7 +95,7 @@ And the device appears enrolled and compliant, while clearly not having an accep
 ## Conclusion
 This proof of concept shows that OS-version-based enrollment restrictions can be undermined. By changing the version values presented during enrollment, a device can be admitted even though its underlying OS version would normally be blocked. 
 
-The impact described here is however limited to the PoC scope and assumes no additional enforcement such as compliance policies is present. The most important takeaway is that enrollment restrictions should be treated as a best-effort barrier control, not as a security boundary as per [Microsoft's notes before setup.](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/enrollment-restrictions-set).
+The impact described here is however limited to the PoC scope and assumes no additional enforcement such as compliance policies is present. The most important takeaway is that enrollment restrictions should be treated as a best-effort barrier control, not as a security boundary as per [Microsoft's notes before setup](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/enrollment-restrictions-set).
 
 ## Sources
 - https://learn.microsoft.com/en-us/security-updates/Securitybulletins/2017/ms17-010
