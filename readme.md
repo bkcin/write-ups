@@ -47,7 +47,7 @@ In the PoC, the key change is that the OS version presented to the enrollment se
 ```
 python3 pytune.py -x http://localhost:8080 entra_join -o Windows -d Example -u Example@[REDACTED] -p [REDACTED]
 ```
-2. Pytune now starts the enrollment using its newly configured default Windows credentials `"DeviceType": "Windows"` and `"OSVersion":"6.1.7601.17514"`
+2. Pytune now starts the enrollment using its newly configured default Windows credentials `"DeviceType":"Windows"` and `"OSVersion":"6.1.7601.17514"`
 3. The enrollment is not stopped at the Entra join phase, because Intune enrollment restrictions do not apply there.
 4. The enrollment continues as normal, until step 12. That is intercepted and modified in Burpsuite:
 ```
