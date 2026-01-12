@@ -1,7 +1,7 @@
 # Breaking Intune enrollment restrictions
 
 ## Introduction 
-This write-up is about research on Microsoft Intune’s Windows enrollment flow. The original goal was to identify attack paths in Intune device enrollment that could be used to gain initial access. As the work progressed, the focus shifted to understanding how enrollment state is established, which server-side validations gate enrollment, and where client-provided device context can influence outcomes. This write-up focuses on the technical findings around device context mutation and what that means for enrollment restrictions.
+This write-up is about research on Microsoft Intune’s Windows enrollment flow. The original goal was to identify attack paths in Intune device enrollment that could be used to gain initial access. As the work progressed, the focus shifted to understanding how enrollment state is established and where client-provided device context can influence outcomes. This write-up focuses on the technical findings around device context mutation and what that means for enrollment restrictions.
 
 This research was completed during my internship at Bureau Veritas Cybersecurity for Fontys University of Applied Sciences.
 ## Prerequisites
@@ -39,7 +39,7 @@ The proof of concept shows that OS-version-based enrollment restrictions can be 
 ![alt text](OSRestriction-1.png)
 
 
-For this POC the OS version was set to a purposely vulnerable OS version: 6.1.7601.17514, a build of Windows 7 that has been historically linked to EternalBlue. In a normal enrollment attempt, that build version should block by the enrollment restriction. Like so:
+For this POC the OS version was set to a purposely vulnerable OS version: 6.1.7601.17514, a build of Windows 7 that has been historically linked to EternalBlue. In a normal enrollment attempt, that build version should be blocked by the enrollment restriction. Like so:
 ![alt text](EnrollementAPIFailedGithub.drawio-1.png)
 
 ### Execution
@@ -69,10 +69,10 @@ Content-Length: 8306
                         <ac:Value>CIMClient_Windows</ac:Value>
                     </ac:ContextItem>
                     <ac:ContextItem Name="OSVersion">
-                        <ac:Value>6.1.7601.17514</ac:Value>            <-------------- This values should be changed to an acceptable build
+                        <ac:Value>6.1.7601.17514</ac:Value>            <-------------- This value should be changed to an acceptable build
                     </ac:ContextItem>
                     <ac:ContextItem Name="ApplicationVersion">
-                        <ac:Value>6.1.7601.17514</ac:Value>            <-------------- This values should be changed to an acceptable build
+                        <ac:Value>6.1.7601.17514</ac:Value>            <-------------- This value should be changed to an acceptable build
                     </ac:ContextItem>
                 </ac:AdditionalContext>
             </wst:RequestSecurityToken>
