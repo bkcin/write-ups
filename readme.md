@@ -75,10 +75,10 @@ Content-Length: 8306
                         <ac:Value>CIMClient_Windows</ac:Value>
                     </ac:ContextItem>
                     <ac:ContextItem Name="OSVersion">
-                        <ac:Value>6.1.7601.17514</ac:Value>   <-- This value should be changed to an acceptable build
+                        <ac:Value>6.1.7601.17514</ac:Value>   <-- This value should be changed 
                     </ac:ContextItem>
                     <ac:ContextItem Name="ApplicationVersion">
-                        <ac:Value>6.1.7601.17514</ac:Value>  <-- This value should be changed to an acceptable build
+                        <ac:Value>6.1.7601.17514</ac:Value>  <-- This value should be changed
                     </ac:ContextItem>
                 </ac:AdditionalContext>
             </wst:RequestSecurityToken>
